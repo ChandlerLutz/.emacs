@@ -1,0 +1,22 @@
+# -*- mode: snippet -*-
+# name: renderhw
+# key: renderhw
+# --
+##Render ${1:myfile}
+for (i in c(TRUE, FALSE)) {
+  rmarkdown::render("$1.Rmd",
+                    output_format = "html_document",
+                    params = list(soln = i),
+                    output_file=ifelse(i, "$1_Solutions.html", "$1.html"))
+  rmarkdown::render("$1.Rmd",
+                     output_format = "pdf_document",
+                     params = list(soln = i),
+                     output_file=ifelse(i, "$1_Solutions.pdf", "$1.pdf"))
+}
+knitr::knit("$1.Rmd",
+            tangle = TRUE,
+            output = "$1_Solutions.R")
+##Delete knitr and rmarkdown output from .R file
+R_file <- readLines("$1_Solutions.R")
+R_file <- R_file[6:length(R_file)]
+write(R_file, file = "$1_Solutions.R")

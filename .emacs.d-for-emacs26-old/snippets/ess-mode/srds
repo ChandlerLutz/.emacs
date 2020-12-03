@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: srds
+# key: srds
+# binding: direct-keybinding
+# --
+saveRDS($1, "$0")

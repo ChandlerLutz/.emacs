@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: dates
+# key: dates
+# --
+seq.dates <- seq(from = as.Date("$1"), to = as.Date("$2"),
+                 by = "$3")

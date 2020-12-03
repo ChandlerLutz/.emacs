@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: CLmisc
+# key: CLmisc
+# --
+suppressMessages({library(CLmisc); $1})
+

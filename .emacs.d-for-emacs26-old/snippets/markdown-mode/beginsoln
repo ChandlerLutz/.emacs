@@ -1,0 +1,8 @@
+# key: beginsoln
+# name: beginsoln
+# --
+<!-- Begin Solution  -->
+\`r if(!params$soln) {"\\\\begin{comment}"}\`
+
+**Solution:**
+

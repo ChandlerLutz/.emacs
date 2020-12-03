@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: imat
+# key: imat
+# --
+import 'package:flutter/material.dart';

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: start
+# key: start
+# --
+// `(file-relative-name (file-name-directory buffer-file-name) (locate-dominating-file default-directory ".git"))``(buffer-name)`

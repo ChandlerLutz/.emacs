@@ -1,0 +1,16 @@
+# key: setwd
+# name: setwd
+# --
+##Set working directory
+wd <- "`(file-name-directory buffer-file-name)`"
+if (dir.exists(wd)) {
+    setwd(wd)
+} else {
+    ##wd has the wrong path, Assume only the first folder (e.g. c) is wrong
+    temp.wd <- getwd()
+    base.folder <- substr(temp.wd, 1, 1)
+    wd <- paste0(base.folder, substring(wd, 2))
+    setwd(wd)
+    rm(temp.wd, base.folder)
+}
+rm(wd)

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: test
+# key: test
+# --
+testthat::expect_true(should.be.true)

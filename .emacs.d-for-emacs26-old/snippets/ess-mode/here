@@ -1,0 +1,8 @@
+# key: here
+# name: here
+# Based on emacs function file-relative-name function
+# From this comment: https://github.com/abo-abo/swiper/issues/1103#issuecomment-336042201
+# From the current buffer name, (1) find the location to the ".here" file using the emacs locate-dominating-file function 
+# --
+##Set wd using the here package
+setwd(paste(here::here(), "`(file-relative-name (file-name-directory buffer-file-name) (locate-dominating-file default-directory ".here"))`", sep = "/"))

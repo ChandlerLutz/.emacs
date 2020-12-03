@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: data.table
+# key: data.table
+# --
+##Load Packages
+library(data.table); library(dtplyr); library(dplyr);
+library(magrittr); library(lubridate); library(haven);
+library(stringr);
+

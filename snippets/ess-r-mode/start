@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: start
+# key: start
+# --
+## `(buffer-file-name)`
+
+##    Chandler Lutz
+##    Questions/comments: cl.eco@cbs.dk
+##    $Revisions:      1.0.0     $Date:  `(format-time-string "%Y-%m-%d" (current-time))`
+

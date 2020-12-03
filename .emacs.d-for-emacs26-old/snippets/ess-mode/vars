@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: vars
+# key: vars
+# --
+${1:vars} <- do.call("rbind", $1) %>%
+    as.data.frame(., stringsAsFactors = FALSE)
+$1[] <- lapply($1, function(x) unlist(x))
+$1 <- setNames($1, c($2))

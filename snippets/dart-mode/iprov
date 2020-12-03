@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: iprov
+# key: iprov
+# --
+import 'package:provider/provider.dart';

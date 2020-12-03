@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: rds
+# key: rds
+# binding: direct-keybinding
+# --
+readRDS("$0")

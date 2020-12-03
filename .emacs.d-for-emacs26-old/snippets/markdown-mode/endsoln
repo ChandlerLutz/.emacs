@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: endsoln
+# key: endsoln
+# --
+<!-- End Solution -->
+\`r if(!params$soln) {"\\\\end{comment}"}\`
+

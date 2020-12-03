@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: pre
+# key: pre
+# --
+##Load Preliminaries
+source("0-Preliminaries.R")
+
+$0
