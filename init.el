@@ -95,8 +95,11 @@
     (add-hook 'prog-mode-hook 'flyspell-prog-mode)
     (add-hook 'text-mode-hook 'flyspell-mode)
     )
-  :config ;;https://www.reddit.com/r/emacs/comments/dgj0ae/tutorial_spellchecking_with_hunspell_170_for/
-  (progn
+  :config
+  ;; if the aff file exists 
+  (if (file-exists-p "~/.emacs.d/hunspell_windows/hunspell_dicts_dir/en_US.aff")
+      (progn
+;;https://www.reddit.com/r/emacs/comments/dgj0ae/tutorial_spellchecking_with_hunspell_170_for/
     (setq ispell-program-name "hunspell")
     (setq ispell-hunspell-dict-paths-alist
 	  '(("en_US" "~/.emacs.d/hunspell_windows/hunspell_dicts_dir/en_US.aff")))
@@ -107,8 +110,9 @@
     ;;(flyspell-mode 1)
     ;; ispell-word for showing correcting options of the current misspelled word
     (global-set-key (kbd "M-\\") 'ispell-word)
-    
     ))
+  )
+
 
 ;; ------------------ ;;
 ;; --  Parentheses -- ;;
