@@ -5,7 +5,10 @@
 ;; https://blog.d46.us/advanced-emacs-startup/
 ;; Make startup faster by reducing the frequency of garbage
 ;; collection.  The default is 800 kilobytes.  Measured in bytes.
-(setq gc-cons-threshold (* 50 1000 1000))
+;; (setq gc-cons-threshold (* 50 1000 1000))
+;; see https://emacs-lsp.github.io/lsp-mode/page/performance/
+(setq gc-cons-threshold 500000000)
+(setq read-process-output-max (* 1024 1024 3)) ;; 3mb
 
 
 ;; ---------------------------------------- ;;
@@ -162,6 +165,10 @@
   (setq ivy-re-builders-alist
       '((swiper . regexp-quote)
         (t      . ivy--regex-fuzzy)))
+  ;; to speed up swiper
+  ;; https://www.reddit.com/r/emacs/comments/cfdv1y/swiper_is_extreamly_slow/
+  (setq swiper-use-visual-line nil)
+  (setq swiper-use-visual-line-p (lambda (a) nil))
   (ivy-mode 1))
 
 (use-package counsel
@@ -212,7 +219,14 @@
   ;; prefix lsp commands with C-c l
   (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
   :config
-  (lsp-enable-which-key-integration t))
+  (lsp-enable-which-key-integration t)
+  ;; see
+  ;; https://emacs-lsp.github.io/lsp-mode/page/performance/
+  (setq lsp-completion-provider :capf)
+  ;; disable ui doc b/c of possible slow performance on windows
+  ;; https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
+  (setq lsp-ui-doc-enable nil)
+  )
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
   :custom
@@ -240,7 +254,12 @@
   ;; https://github.com/emacs-lsp/lsp-mode/issues/1028
   (lsp-eldoc-hook nil)
   )
+(use-package smartparens
+  :hook ((dart-mode) .  smartparens-mode)
+  :defer 2
+  )
 
+  
 
 ;; -------------- ;;
 ;; -- flycheck -- ;;
@@ -528,7 +547,7 @@
  ;; If there is more than one, they won't work right.
  '(cua-mode t nil (cua-base))
  '(package-selected-packages
-   '(adaptive-wrap yaml-mode yaml yasnippet poly-markdown polymode fyspell latex highlight-parentheses flycheck doom-modeline counsel helpful ivy-rich ivy which-key rainbow-delimiters use-package material-theme)))
+   '(smartparens adaptive-wrap yaml-mode yaml yasnippet poly-markdown polymode fyspell latex highlight-parentheses flycheck doom-modeline counsel helpful ivy-rich ivy which-key rainbow-delimiters use-package material-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -538,4 +557,4 @@
 
 ;; GC
 ;; Make gc pauses faster by decreasing the threshold.
-(setq gc-cons-threshold (* 2 1000 1000))
+;; (setq gc-cons-threshold (* 2 1000 1000))

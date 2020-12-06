@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: srds
+# key: srds
+# for emacs regex, see 
+# see https://stackoverflow.com/a/21513107/1317443
+# and 
+# https://emacs.stackexchange.com/a/20181/10338
+# --
+saveRDS($1, here::here("$2/`(let ((str (file-name-directory buffer-file-name)))
+  (when (string-match "^.*/\\(.*\\)/$" str)
+    (match-string 1 str)))
+`/$3.rds"))
+
