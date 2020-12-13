@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# name: stex
+# key: stex
+# --
+
+if (!dir.exists(here::here("$2/`(let ((str (file-name-directory buffer-file-name)))
+  (when (string-match "^.*/\\(.*\\)/$" str)
+    (match-string 1 str)))
+`")))
+  dir.create((here::here("$2/`(let ((str (file-name-directory buffer-file-name)))
+  (when (string-match "^.*/\\(.*\\)/$" str)
+    (match-string 1 str)))
+`")))
+
+star_tex_write($1, here::here("$2/`(let ((str (file-name-directory buffer-file-name)))
+  (when (string-match "^.*/\\(.*\\)/$" str)
+    (match-string 1 str)))
+`/$3.tex"), headers = ${4:FALSE})
+
