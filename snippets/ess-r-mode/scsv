@@ -1,8 +1,7 @@
 # -*- mode: snippet -*-
-# name: sfst
-# key: sfst
+# name: scsv
+# key: scsv
 # --
-
 if (!dir.exists(here::here("$2/`(let ((str (file-name-directory buffer-file-name)))
   (when (string-match "^.*/\\(.*\\)/$" str)
     (match-string 1 str)))
@@ -12,8 +11,8 @@ if (!dir.exists(here::here("$2/`(let ((str (file-name-directory buffer-file-name
     (match-string 1 str)))
 `")))
 
-write_fst($1, here::here("$2/`(let ((str (file-name-directory buffer-file-name)))
+fwrite($1, here::here("$2/`(let ((str (file-name-directory buffer-file-name)))
   (when (string-match "^.*/\\(.*\\)/$" str)
     (match-string 1 str)))
-`/$3.fst"), compress = ${4:50})
+`/$3.csv"))
 

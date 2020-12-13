@@ -9,6 +9,13 @@
   - see https://github.com/emacs-lsp/lsp-mode/issues/1223
   - see https://github.com/emacs-lsp/lsp-mode/issues/1223#issuecomment-586674535
   
+* Make markdown code text bigger 
+* Get spelling working right on work computer versus when using this computer -- possibly check if the variable `emacs-modified-version` exists 
+
+* auto-fill mode
+  
+* On my work computer using emacs modified for windows, when I hit shift enter it sends the result to a new buffer even if a buffer is already open -- see if this is an issue on my dell and try to fix 
+
 
 ## Rmd mode 
 

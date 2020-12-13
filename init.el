@@ -96,7 +96,7 @@
     (add-hook 'text-mode-hook 'flyspell-mode)
     )
   :config
-  ;; if the aff file exists 
+  ;; if function emacs-modified-version function is nill 
   (if (file-exists-p "~/.emacs.d/hunspell_windows/hunspell_dicts_dir/en_US.aff")
       (progn
 ;;https://www.reddit.com/r/emacs/comments/dgj0ae/tutorial_spellchecking_with_hunspell_170_for/
@@ -229,12 +229,17 @@
   (setq lsp-completion-provider :capf)
   ;; disable ui doc b/c of possible slow performance on windows
   ;; https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
-  (setq lsp-ui-doc-enable nil)
+  ;;(setq lsp-ui-doc-enable nil)
   )
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
   :custom
   (lsp-ui-doc-position 'bottom)
+  ;; set the delay for lsp ui doc
+  (lsp-ui-doc-delay 1)
+  ;; set the delay to lsp sideline code actions
+  ;; see https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
+  (lsp-ui-sideline-delay 0.75)
   )
 
 
@@ -278,16 +283,25 @@
 (use-package ess
   :mode "\\.R|.r\\'"
   :config
+  
   ;; To get R 3.0.0 and higher working with emacs
   (setq inferior-R-program-name "C:/R/Rcurrent/bin/x64/Rterm.exe")
   ;; Do not ask for ess startup location 
   (setq ess-ask-for-ess-directory nil)
+  ;; To make a new process start with just *R* for the below
+  ;; shift enter
+  ;; see https://github.com/emacs-ess/ESS/issues/1073
+  (setq ess-gen-proc-buffer-name-function 'ess-gen-proc-buffer-name:simple)
   ;; The name of the ESS process associated with the buffer.
   (setq ess-local-process-name "R")
   (setq ansi-color-for-comint-mode 'filter)
   (setq comint-scroll-to-bottom-on-input t)
   (setq comint-scroll-to-bottom-on-output t)
   (setq comint-move-point-for-output t)
+  ;; This makes <S-return> start a new session window to the right
+  ;; with the program on the left -- currently not working with R
+  ;; programs in the `~/` directory as the inferior ess buffer starts
+  ;; for `~/.emacs.d/scratch.R` as `R:.emacs.d`
   (defun my-ess-start-R ()
     (interactive)
     (if (not (member "*R*" (mapcar (function buffer-name) (buffer-list))))
@@ -305,6 +319,7 @@
     (if (and transient-mark-mode mark-active)
 	(call-interactively 'ess-eval-region)
       (call-interactively 'ess-eval-line-and-step)))
+  
   ;; Set R style
   ;; see https://stackoverflow.com/a/34873014
   (add-hook 'find-file-hook 'my-r-style-hook)
