@@ -3,7 +3,6 @@
 # key: clr
 # --
 ##Clear the workspace
-##Delete all objects and detach packages
 rm(list = ls()) 
 suppressWarnings(CLmisc::detach_all_packages())
 

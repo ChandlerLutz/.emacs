@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: ConsumerWidget
+# key: cwidget
+# https://riverpod.dev/docs/concepts/reading/#consumerwidget
+# --
+class $1 extends ConsumerWidget {
+  const $1({ Key? key }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, ScopedReader watch) {
+  
+    return ${2:Container}(
+      $0
+    );
+  }
+}

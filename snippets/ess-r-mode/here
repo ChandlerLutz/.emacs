@@ -5,4 +5,4 @@
 # From the current buffer name, (1) find the location to the ".here" file using the emacs locate-dominating-file function 
 # --
 ##Set wd using the here package
-setwd(paste(here::here(), "`(file-relative-name (file-name-directory buffer-file-name) (locate-dominating-file default-directory ".here"))`", sep = "/"))
+setwd(paste(here::here("`(file-relative-name (file-name-directory buffer-file-name) (locate-dominating-file default-directory ".here"))`", sep = "/")))

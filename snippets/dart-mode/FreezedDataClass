@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: FreezedDataClass
+# key: fdataclass
+# --
+@freezed
+abstract class ${1:DataClass} with _$$1 {
+  const factory $1($2) = _$1;
+}

@@ -1,0 +1,5 @@
+# key: ptf
+# name: PartFreezedStatement
+# https://www.gnu.org/software/emacs/manual/html_node/elisp/File-Name-Components.html
+# --
+part '`(file-name-base buffer-file-name)`.freezed.dart';

@@ -5,10 +5,10 @@
 ;; https://blog.d46.us/advanced-emacs-startup/
 ;; Make startup faster by reducing the frequency of garbage
 ;; collection.  The default is 800 kilobytes.  Measured in bytes.
-;; (setq gc-cons-threshold (* 50 1000 1000))
+;; (setq gc-cons-threshold (* 100 1000 1000))
 ;; see https://emacs-lsp.github.io/lsp-mode/page/performance/
-(setq gc-cons-threshold 500000000)
-(setq read-process-output-max (* 1024 1024 3)) ;; 3mb
+(setq gc-cons-threshold 1000000000)
+(setq read-process-output-max (* 1024 1024 10)) ;; 10mb
 
 
 ;; ---------------------------------------- ;;
@@ -69,7 +69,7 @@
 
 
 ;; line numbers
-(column-number-mode)  ;; column numbers
+;;(column-number-mode)  ;; column numbers
 (global-display-line-numbers-mode t) ;; line numbers
 
 ;; Disable line numbers for some modes
@@ -204,12 +204,12 @@
 
 ;; see here to try to get the incons working
 ;; https://github.com/daviwil/emacs-from-scratch/issues/1
-(use-package doom-modeline
-  :defer 2
-  :init (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 15)))
+;; (use-package doom-modeline
+;;   :defer 2
+;;   :init (doom-modeline-mode 1)
+;;   :custom ((doom-modeline-height 15)))
 
-(use-package all-the-icons)
+;; (use-package all-the-icons)
 
 ;; -------------- ;;
 ;; -- LSP Mode -- ;;
