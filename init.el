@@ -240,6 +240,8 @@
   ;; set the delay to lsp sideline code actions
   ;; see https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
   (lsp-ui-sideline-delay 0.75)
+  ;; see https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
+  (setq lsp-modeline-code-actions-enable nil)
   ;; from https://lupan.pl/dotemacs/
   :bind (("C-c e n" . flymake-goto-next-error)
 	 ("C-c e p" . flymake-goto-prev-error)
@@ -269,6 +271,8 @@
   ;; doc tool tip
   ;; https://github.com/emacs-lsp/lsp-mode/issues/1028
   (lsp-eldoc-hook nil)
+  ;; turn off breadcrumbs at the top
+  (lsp-headerline-breadcrumb-enable nil)
   )
 (use-package smartparens
   :hook ((dart-mode) .  smartparens-mode)
