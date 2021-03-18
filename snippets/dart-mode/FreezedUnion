@@ -1,9 +1,8 @@
-# -*- mode: snippet -*-
-# name: FreezedUnion
 # key: funion
+# name: FreezedUnion
 # --
 @freezed
-abstract class ${1:Union} with _$$1 {
+class ${1:Union} with _$$1 {
   const factory $1.$2($4) = $3;
 }
 
