@@ -419,6 +419,9 @@
          ;; the completions menu is visible, even if the user has not
          ;; explicitly interacted with Company.
 
+	;; initiate completion manually
+	("C-c s" . company-complete)
+
          :map company-active-map
 
          ;; Make TAB always complete the current selection. Note that
@@ -542,10 +545,12 @@
 
 ;; From
 ;; https://github.com/SteveLane/dot-emacs/blob/master/packages-polymode.el
-(use-package polymode
+(use-package poly-markdown
+  :ensure t
   :ensure markdown-mode
   :ensure poly-R
   :ensure poly-noweb
+  :ensure polymode
   :config
   ;; R/tex polymodes
   (add-to-list 'auto-mode-alist '("\\.Rnw" . poly-noweb+r-mode))
@@ -555,6 +560,7 @@
   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
   ;; 
   )
+
 
 ;; --------------- ;; 
 ;; -- yaml mode -- ;;

@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: RmdCodeChunk
+# key: rchk
+# --
+
+\`\`\`{r $1}
+$2
+\`\`\`

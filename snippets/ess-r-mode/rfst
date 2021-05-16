@@ -2,4 +2,4 @@
 # name: rfst
 # key: rfst
 # --
-${1:DT} <- read_fst(here::here("`(file-relative-name (file-name-directory buffer-file-name) (locate-dominating-file default-directory ".here"))`$2"), as_data_table = TRUE)
+${1:DT} <- read_fst(here::here("`(file-relative-name (file-name-directory buffer-file-name) (locate-dominating-file default-directory ".here"))`$2"), as.data.table = TRUE)

@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: startrmd
+# key: startrmd
+# --
+---
+title: "$1"
+author: "Chandler Lutz"
+date: "`(format-time-string "%Y-%m-%d" (current-time))`"
+output: ${2:html}_document
+urlcolor: blue
+
+---
+
+\`\`\`{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+\`\`\`
