@@ -2,17 +2,12 @@
 # name: ggsave
 # key: ggsave
 # --
-if (!dir.exists(here::here("$1/`(let ((str (file-name-directory buffer-file-name)))
+mkdir_p(here::here("$1/`(let ((str (file-name-directory buffer-file-name)))
   (when (string-match "^.*/\\(.*\\)/$" str)
     (match-string 1 str)))
-`")))
-  dir.create(here::here("$1/`(let ((str (file-name-directory buffer-file-name)))
-  (when (string-match "^.*/\\(.*\\)/$" str)
-    (match-string 1 str)))
-`"), recursive = TRUE)
-
+`"))
 ggsave(here::here("$1/`(let ((str (file-name-directory buffer-file-name)))
   (when (string-match "^.*/\\(.*\\)/$" str)
     (match-string 1 str)))
-`/$2.${3:pdf}"), plot = $3, width = $4, height = $5, dpi = ${6:450})
+`/$2.${3:pdf}"), plot = $4, width = $5, height = $6, dpi = ${7:450})
 

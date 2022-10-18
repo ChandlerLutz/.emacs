@@ -7,8 +7,8 @@
 ;; collection.  The default is 800 kilobytes.  Measured in bytes.
 ;; (setq gc-cons-threshold (* 10 1000 1000))
 ;; see https://emacs-lsp.github.io/lsp-mode/page/performance/
-(setq gc-cons-threshold 100000000)
-(setq read-process-output-max (* 1024 1024 5)) ;; 5mb
+(setq gc-cons-threshold 1000000000)
+(setq read-process-output-max (* 1024 1024 10)) ;; 10mb
 
 
 ;; ---------------------------------------- ;;
@@ -125,6 +125,17 @@
   :hook ((prog-mode markdown-mode latex) . rainbow-delimiters-mode)
   :defer 2)
 
+;; -------------------------- ;;
+;; -- Vertical Indentation -- ;;
+;; -------------------------- ;;
+
+(use-package highlight-indent-guides
+  :hook ((prog-mode yaml-mode) . highlight-indent-guides-mode)
+  :defer 2
+  :config
+  (setq highlight-indent-guides-method 'column)
+  )
+
 ;; ----------- ;;
 ;; -- Shell -- ;;
 ;; ----------- ;;
@@ -211,6 +222,34 @@
 
 ;; (use-package all-the-icons)
 
+;; ----------------------- ;;
+;; -- smart parentheses -- ;;
+;; ----------------------- ;;
+
+;; https://emacs.stackexchange.com/a/3015/10338
+(defun sp-newline-and-enter-sexp (&rest _ignored)
+  "Open a new brace or bracket expression, with relevant newlines and indent. "
+  (newline)
+  (indent-according-to-mode)
+  (forward-line -1)
+  (indent-according-to-mode))
+
+(use-package smartparens
+  :hook ((dart-mode python-mode ess-mode terraform-mode) .  smartparens-mode)
+  :defer 2
+  :config
+  ;; https://emacs.stackexchange.com/a/3015/10338
+  (sp-local-pair 'ess-mode "{" nil :post-handlers '((sp-newline-and-enter-sexp "RET")))
+  (sp-local-pair 'ess-mode "(" nil :post-handlers '((sp-newline-and-enter-sexp "RET")))
+  (sp-local-pair 'dart-mode "{" nil :post-handlers '((sp-newline-and-enter-sexp "RET")))
+  (sp-local-pair 'terraform-mode "{" nil :post-handlers '((sp-newline-and-enter-sexp "RET")))
+  )
+
+;; ;; https://emacs.stackexchange.com/a/3015/10338
+;; (sp-local-pair 'ess-mode "{" nil :post-handlers '((my-create-newline-and-enter-sexp "RET")))
+
+
+
 ;; -------------- ;;
 ;; -- LSP Mode -- ;;
 ;; -------------- ;;
@@ -222,6 +261,8 @@
   :init
   ;; prefix lsp commands with C-c l
   (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+  :hook (
+	 (python-mode . lsp))
   :config
   (lsp-enable-which-key-integration t)
   ;; see
@@ -229,19 +270,33 @@
   (setq lsp-completion-provider :capf)
   ;; disable ui doc b/c of possible slow performance on windows
   ;; https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
-  ;;(setq lsp-ui-doc-enable nil)
+  ;; (setq lsp-ui-doc-enable nil)
+  (setq lsp-idle-delay 1)
+  ;; https://github.com/emacs-lsp/lsp-mode/issues/1223#issuecomment-586674535
+  (setq lsp-signature-auto-activate nil)
+  ;; to remove bottom doc buffer as this is already in the
+  ;; doc tool tip
+  ;; https://github.com/emacs-lsp/lsp-mode/issues/1028
+  (setq lsp-eldoc-hook nil)
+  ;; turn off breadcrumbs at the top
+  (setq lsp-headerline-breadcrumb-enable nil)
   )
+
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
-  :custom
-  (lsp-ui-doc-position 'bottom)
+  :config
+  (setq lsp-ui-doc-position 'bottom)
   ;; set the delay for lsp ui doc
-  (lsp-ui-doc-delay 1)
+  ;; (setq lsp-ui-doc-enable nil)
+  (setq lsp-ui-doc-delay 1)
   ;; set the delay to lsp sideline code actions
   ;; see https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
-  (lsp-ui-sideline-delay 0.75)
+  (setq lsp-ui-sideline-delay 1)
   ;; see https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
   (setq lsp-modeline-code-actions-enable nil)
+  ;; see https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
+  ;; (setq lsp-ui-sideline-show-diagnostics nil)
+  
   ;; from https://lupan.pl/dotemacs/
   :bind (("C-c e n" . flymake-goto-next-error)
 	 ("C-c e p" . flymake-goto-prev-error)
@@ -250,7 +305,6 @@
 	 ("C-c e i" . lsp-find-implementation)
 	 ("C-c e t" . lsp-find-type-definition))
   )
-
 
 
 ;; ----------------------------- ;;
@@ -274,18 +328,78 @@
   ;; turn off breadcrumbs at the top
   (lsp-headerline-breadcrumb-enable nil)
   )
-(use-package smartparens
-  :hook ((dart-mode) .  smartparens-mode)
-  :defer 2
+
+;; ---------------------------- ;;
+;; -- Lsp Mode python -- ;;
+;; ---------------------------- ;;
+
+;; from https://github.com/daviwil/emacs-from-scratch/blob/dd9320769f3041ac1edca139496f14abe147d010/Emacs.org#python
+(use-package python-mode
+  :ensure t
+  :hook (python-mode . lsp-deferred)
+  ;; :custom
+  ;; NOTE: Set these if Python 3 is called "python3" on your system!
+  ;; (python-shell-interpreter "python3")
+  ;; (dap-python-executable "python3")
+  ;; (dap-python-debugger 'debugpy)
+  :config
+  ;; (require 'dap-python)
+  ;; https://emacs.stackexchange.com/a/59067/10338
+  (py-underscore-word-syntax-p-off)
+  (setq lsp-ui-doc-enabled nil)
+  ;; Delay flycheck mode
+  ;; https://www.reddit.com/r/emacs/comments/ku4u0u/delay_lsp_mode_diagnostics_until_saving/
+  (setq flycheck-check-syntax-automatically '(idle-change))
+  (setq flycheck-idle-change-delay 2)
+  
   )
 
-  
+;; https://github.com/KaratasFurkan/.emacs.d#lsp-pyright
+;; https://www.reddit.com/r/emacs/comments/ih3q5x/lsp_for_python_sure_but_which_lsp_server/g307cpu?utm_source=share&utm_medium=web2x&context=3
+(use-package lsp-pyright
+  :hook
+  (python-mode . (lambda ()
+                   (require 'lsp-pyright)
+                   (lsp-deferred))))
+		     
+
+(use-package pyvenv
+  :config
+  (pyvenv-mode 1))
+
+
+;; -- terraform mode --- ;;
+
+(use-package terraform-mode
+  :hook (terraform-mode . lsp-deferred)
+  :config
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection '("terraform-ls" "serve"))
+		    :major-modes '(terraform-mode)
+		    :server-id 'terraform-ls)))
+
+;; ----------------- ;;
+;; -- Docker Mode -- ;;
+;; ----------------- ;;
+
+(use-package dockerfile-mode)
+
+(use-package docker
+  :ensure t
+  :bind ("C-c d" . docker))
 
 ;; -------------- ;;
 ;; -- flycheck -- ;;
 ;; -------------- ;;
 
 (use-package flycheck)
+
+;; -------------------- ;; 
+;; -- Stata ado mode -- ;;
+;; -------------------- ;;
+
+(use-package ado-mode
+  :ensure t)
 
 ;; ---------------- ;;
 ;; -- ESS R mode -- ;;
@@ -402,7 +516,7 @@
 ;; --------------------------------- ;;
 
 (use-package company
-  :hook (prog-mode . company-mode)
+  :hook ((prog-mode shell-mode inferior-ess-r-mode) . company-mode)
 
   ;; To make sure that there are we can use tab completion
   ;; but we can use tab to auto-complete and return only
@@ -465,7 +579,9 @@
   :defer 2 
   :custom
   (company-minimum-prefix-length 2)
-  (company-idle-delay 0.0)
+  (company-idle-delay 0.01)
+  ;; https://www.reddit.com/r/emacs/comments/m52nky/im_sorry_but_why_is_lspmode_and_company_so_slow/gr2ap03?utm_source=share&utm_medium=web2x&context=3
+  (company-tooltip-limit 15)
   )
 
 
@@ -530,12 +646,12 @@
 
 ;; from https://jblevins.org/projects/markdown-mode/
 (use-package markdown-mode
+  :ensure t
   ;;:ensure auctex
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
-("\\.Rmd\\'" . markdown-mode)
   :init (setq markdown-command "multimarkdown")
   :config
   (setq markdown-enable-math t)
@@ -543,34 +659,51 @@
   (add-hook 'markdown-mode-hook 'adaptive-wrap-prefix-mode)
   )
 
-;; From
-;; https://github.com/SteveLane/dot-emacs/blob/master/packages-polymode.el
-(use-package poly-markdown
+(use-package poly-R
   :ensure t
-  :ensure markdown-mode
-  :ensure poly-R
-  :ensure poly-noweb
-  :ensure polymode
-  :config
-  ;; R/tex polymodes
-  (add-to-list 'auto-mode-alist '("\\.Rnw" . poly-noweb+r-mode))
-  (add-to-list 'auto-mode-alist '("\\.rnw" . poly-noweb+r-mode))
-  (add-to-list 'auto-mode-alist '("\\.Rmd" . poly-markdown+r-mode))
-  (setq markdown-enable-math t)
-  (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-  ;; 
   )
 
+;; https://polymode.github.io/installation/
+(use-package poly-markdown
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.Rmd$" . poly-markdown-mode))
+  (add-to-list 'auto-mode-alist '("\\.qmd$" . poly-markdown-mode))
+  (setq markdown-enable-math t)
+  (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+  )
 
 ;; --------------- ;; 
 ;; -- yaml mode -- ;;
 ;; --------------- ;;
 
 (use-package yaml-mode
+  :ensure t
   :init
   (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
   (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
   )
+
+;; ------------------- ;;
+;; -- Obsidian Mode -- ;;
+;; ------------------- ;;
+
+(use-package obsidian
+  :ensure t
+  :demand t
+  :config
+  (obsidian-specify-path "d:/Dropbox/Obsidian")
+  (global-obsidian-mode t)
+  :custom
+  ;; This directory will be used for `obsidian-capture' if set.
+  (obsidian-inbox-directory "Inbox")
+  :bind (:map obsidian-mode-map
+  ;; Replace C-c C-o with Obsidian.el's implementation. It's ok to use another key binding.
+  ("C-c C-o" . obsidian-follow-link-at-point)
+  ;; Jump to backlinks
+  ("C-c C-b" . obsidian-backlink-jump)
+  ;; If you prefer you can use `obsidian-insert-link'
+  ("C-c C-l" . obsidian-insert-wikilink)))
 
 ;; -------------------------- ;;
 ;; -- Custom Set Variables -- ;;
@@ -581,9 +714,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(cua-mode t nil (cua-base))
+ '(global-display-line-numbers-mode t)
  '(package-selected-packages
-   '(smartparens adaptive-wrap yaml-mode yaml yasnippet poly-markdown polymode fyspell latex highlight-parentheses flycheck doom-modeline counsel helpful ivy-rich ivy which-key rainbow-delimiters use-package material-theme)))
+   '(smartparens adaptive-wrap yaml-mode yaml yasnippet poly-markdown polymode fyspell latex highlight-parentheses flycheck doom-modeline counsel helpful ivy-rich ivy which-key rainbow-delimiters use-package material-theme))
+ '(show-paren-mode t)
+ '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

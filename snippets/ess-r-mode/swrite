@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: swrite
+# key: swrite
+# --
+mkdir_p(here::here("$2/`(let ((str (file-name-directory buffer-file-name)))
+  (when (string-match "^.*/\\(.*\\)/$" str)
+    (match-string 1 str)))
+`"))
+star_write_and_compile_pdf(
+  $1,
+  file = here::here(
+    "$2/`(let ((str (file-name-directory buffer-file-name)))
+  (when (string-match "^.*/\\(.*\\)/$" str)
+    (match-string 1 str)))
+`/$3.tex"  
+  )
+)

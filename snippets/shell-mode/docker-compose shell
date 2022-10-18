@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: docker-compose shell
+# key: dcs
+# --
+docker-compose run --rm ${1:app} sh -c "${2:pytest} $0"
