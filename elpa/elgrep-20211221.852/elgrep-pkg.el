@@ -1,0 +1,2 @@
+;;; Generated package description from elgrep.el  -*- no-byte-compile: t -*-
+(define-package "elgrep" "20211221.852" "Searching files for regular expressions" '((emacs "26.2") (async "1.5")) :commit "f8124c699b6a4abfb471269bc26afbcc8136f476" :authors '(("Tobias Zawada" . "i@tn-home.de")) :maintainer '("Tobias Zawada" . "i@tn-home.de") :keywords '("tools" "matching" "files" "unix") :url "https://github.com/TobiasZawada/elgrep")

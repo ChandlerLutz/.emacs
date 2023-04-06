@@ -1,0 +1,21 @@
+# -*- mode: snippet -*-
+# name: zref
+# key: zref
+# --
+`(format-time-string "%Y%m%d%H%M" (current-time))`
+
+Status: #${1:paper}
+
+Tags: $2
+
+Title: ${3:`(file-name-sans-extension (buffer-name))`}
+
+[Link]($4)
+
+Authors: $5
+
+---
+
+# `(file-name-sans-extension (buffer-name))`
+
+$6

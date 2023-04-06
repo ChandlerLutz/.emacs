@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: zidea
+# key: zidea
+# --
+`(format-time-string "%Y%m%d%H%M" (current-time))`
+
+Status: #idea
+
+Tags: $1
+
+# `(file-name-sans-extension (buffer-name))`
+
+$2
+
+---
+# References
+
