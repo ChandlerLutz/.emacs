@@ -6,15 +6,10 @@
 # and 
 # https://emacs.stackexchange.com/a/20181/10338
 # --
-if (!dir.exists(here::here("$2/`(let ((str (file-name-directory buffer-file-name)))
+mkdir_p(here::here("$2/`(let ((str (file-name-directory buffer-file-name)))
   (when (string-match "^.*/\\(.*\\)/$" str)
     (match-string 1 str)))
-`")))
-  dir.create(here::here("$2/`(let ((str (file-name-directory buffer-file-name)))
-  (when (string-match "^.*/\\(.*\\)/$" str)
-    (match-string 1 str)))
-`"), recursive = TRUE)
-
+`"))
 saveRDS($1, here::here("$2/`(let ((str (file-name-directory buffer-file-name)))
   (when (string-match "^.*/\\(.*\\)/$" str)
     (match-string 1 str)))
